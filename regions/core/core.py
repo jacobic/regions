@@ -79,6 +79,16 @@ class Region(object):
 
         return '<{0}({1})>'.format(self.__class__.__name__, params)
 
+    def __reduce__(self):
+        if hasattr(self, 'center'):
+            params = [self.center]
+        else:
+            params = []
+        if self._repr_params is not None:
+            for key in self._repr_params:
+                params.append(getattr(self, key))
+        return (self.__class__, tuple(params))
+
     def __str__(self):
         cls_info = [('Region', self.__class__.__name__)]
         if hasattr(self, 'center'):
